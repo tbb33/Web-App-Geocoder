@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+  <title>Geocoding App</title>
+  <head>
+    <link href= "../static/main.css" rel="stylesheet">
+  </head>
+    <body>
+      <div class="container">
+        <h2>Geocoder</h2>
+        <h3>Get the latitude and longitude of multiple addresses with a few
+        clicks. </h3>
+        <h4>This application will calculate the
+        latitude and longitude based on the addresses you provide in
+        a CSV file. <br>It will display a new table containing 2 new
+        columns - latitude and longitude.
+        <br>Please ensure your CSV file contains a
+        column named "Address" with rows of addresses. The column name is
+        not case sensitive. </h4>
+
+        <form action="{{url_for('success')}}", method="POST",
+          enctype="multipart/form-data">
+          <input type="file" name="file" enctype="multipart/form-data">
+          <button type="submit">Submit </button>
+        </form>
+        {% if btn %}
+          {% include btn ignore missing %}
+        {% endif %}
+      </div>
+    </body>
+</html>

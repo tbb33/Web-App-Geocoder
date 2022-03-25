@@ -1,0 +1,33 @@
+html, body{
+  height:100%;
+  margin: 0;
+  background-color: #117864;
+  overflow: hidden;
+  text-align: center;
+}
+
+.container h2{
+  font-family: Arial, sans-serif;
+  font-size: 50px;
+  color: #D7DBDD;
+  margin-top: 80px;
+}
+
+.container h3{
+  font-family: Helvetica;
+  font-size: 14px;
+  color: #F2F3F4;
+  margin-top: 10px;
+  margin-left:80px;
+  margin-right:80px;
+}
+
+
+.container h4{
+  font-family: Helvetica;
+  font-size: 14px;
+  color: #F2F3F4;
+  margin-top: 10px;
+  margin-left:80px;
+  margin-right:80px;
+}
