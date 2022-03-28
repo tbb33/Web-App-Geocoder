@@ -22,21 +22,27 @@ def success():
         csv_writer = writer(write_file)
 
         for row in csv_reader:
-            #new column
+            #lat column
             if csv_reader.line_num == 1: #header
                 row.append("Latitude")
             else:
-                #row.append(row[1].latitude)
-                #row.append(row[1].apply(lambda loc: tuple(loc.point) if loc else None))
-                #row.append(row[0]+'a') #first row append "a"
                 url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(row[1]) +'?format=json'
                 response = requests.get(url).json()
                 if(len(response)!=0):
                     row.append(response[0]['lat'])
                 else:
-                    return('-1')
+                    return('')
+            #long column
+            if csv_reader.line_num == 1: #header
+                row.append("Longitude")
+            else:
+                url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(row[1]) +'?format=json'
+                response = requests.get(url).json()
+                if(len(response)!=0):
+                    row.append(response[0]['lon'])
+                else:
+                    return('')
             csv_writer.writerow(row)
-
 
     return render_template("index.html", btn="download.html") #shows index pg along with download button
 
