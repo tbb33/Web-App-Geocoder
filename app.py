@@ -10,7 +10,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route('/success', methods=['POST']) #url
+@app.route('/geocode', methods=['POST']) #url
 def success():
     global file
     file=request.files["file"]
@@ -31,7 +31,7 @@ def success():
                 if(len(response)!=0):
                     row.append(response[0]['lat'])
                 else:
-                    return('')
+                    row.append("")
             #long column
             if csv_reader.line_num == 1: #header
                 row.append("Longitude")
@@ -41,7 +41,7 @@ def success():
                 if(len(response)!=0):
                     row.append(response[0]['lon'])
                 else:
-                    return('')
+                    row.append("")
             csv_writer.writerow(row)
 
     return render_template("index.html", btn="download.html") #shows index pg along with download button
