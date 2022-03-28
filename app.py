@@ -13,18 +13,20 @@ def success():
     global file
     file=request.files["file"]
     file.save(secure_filename("uploaded"+file.filename))
-    # with open("uploaded"+file.filename, "w") as output:
-    #     output.write("Test")
+
     with open("uploaded"+file.filename, "r") as read_file,\
     open("ooutput.csv", "w",newline='') as write_file:
         csv_reader = reader(read_file)
         csv_writer = writer(write_file)
+        print(csv_reader.line_num)
         for row in csv_reader:
-            row.append("Test")
+            #new column
+            if csv_reader.line_num == 1: #header
+                row.append("Latitude")
+            else:
+                row.append(row[0]+'a') #first row append "a"
             csv_writer.writerow(row)
-            # row_count = sum(1 for row in read_file)
-            # print(row_count)
-            # print(row)
+
 
     return render_template("index.html", btn="download.html") #shows index pg along with download button
 
