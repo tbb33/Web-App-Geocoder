@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from csv import writer, reader
 import urllib
 import requests
+import csv
 
 app = Flask(__name__)
 
@@ -48,8 +49,8 @@ def success():
 
 @app.route('/download')
 def download():
-    return send_file("uploaded"+file.filename,
-    attachment_filename="geocoded.csv", as_attachment="True")
+    return send_file("output.csv",
+    attachment_filename="geocoded_output.csv", as_attachment="True")
 
 if __name__=='__main__':
     app.debug=True
