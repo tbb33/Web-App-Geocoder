@@ -16,5 +16,5 @@ I learned how to:
 Files:
 1. app.py: contains Python code to handle backend and make changes to CSV file
 2. index.html (inside templates folder): HTML code stylized using Bootstrap
-3. download.html (inside templates folder): HTML code for download button feature
+3. gdownload.html (inside templates folder): HTML code for download button feature
 4. sample_input.csv: example of CSV file to upload to the web app
