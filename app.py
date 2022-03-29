@@ -15,9 +15,10 @@ def index():
 def success():
     global file
     file=request.files["file"]
-    file.save(secure_filename("uploaded"+file.filename))
+    #saves copy of uploaded file
+    file.save(secure_filename("uploaded_"+file.filename))
 
-    with open("uploaded"+file.filename, "r") as read_file,\
+    with open("uploaded_"+file.filename, "r") as read_file,\
     open("output.csv", "w",newline='') as write_file:
         csv_reader = reader(read_file)
         csv_writer = writer(write_file)
@@ -27,7 +28,8 @@ def success():
             if csv_reader.line_num == 1: #header
                 row.append("Latitude")
             else:
-                url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(row[1]) +'?format=json'
+                url = 'https://nominatim.openstreetmap.org/search/' \
+                + urllib.parse.quote(row[1]) +'?format=json'
                 response = requests.get(url).json()
                 if(len(response)!=0):
                     row.append(response[0]['lat'])
@@ -37,18 +39,19 @@ def success():
             if csv_reader.line_num == 1: #header
                 row.append("Longitude")
             else:
-                url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(row[1]) +'?format=json'
+                url = 'https://nominatim.openstreetmap.org/search/' \
+                + urllib.parse.quote(row[1]) +'?format=json'
                 response = requests.get(url).json()
                 if(len(response)!=0):
                     row.append(response[0]['lon'])
                 else:
                     row.append("")
             csv_writer.writerow(row)
+    #shows index pg along with download button
+        return render_template("index.html", btn="gdownload.html")
 
-    return render_template("index.html", btn="download.html") #shows index pg along with download button
-
-@app.route('/download')
-def download():
+@app.route('/gdownload')
+def gdownload():
     return send_file("output.csv",
     attachment_filename="geocoded_output.csv", as_attachment="True")
 
