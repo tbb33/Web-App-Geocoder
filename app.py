@@ -1,9 +1,8 @@
 from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
-from csv import writer, reader
-import urllib
-import requests
 import csv
+import pandas as pd
+import geocoder
 
 app = Flask(__name__)
 
@@ -14,40 +13,29 @@ def index():
 @app.route('/geocode', methods=['POST']) #url
 def success():
     global file
-    file=request.files["file"]
-    #saves copy of uploaded file
-    file.save(secure_filename("uploaded_"+file.filename))
+    if request.method=='POST':
+        file=request.files["file"] #get file from user
+        file.save(secure_filename("uploaded_"+file.filename))
+        df = pd.read_csv("uploaded_"+file.filename)
+        #capitalize first letter, rest lowercase
+        df.columns = [x.capitalize() for x in df.columns]
+        print(df.columns)
+        #addr_index = df.columns.get_loc("Address")
+        #print(addr_index) #get col index
+        #print(type(df))
+        def geocoding(input_address):
+            try:
+                g = geocoder.osm(input_address)
+                return g.osm['x'], g.osm['y']
+            except:
+                return ""
+        #for row in df.iterrows():
+        df['Locations'] = df['Address'].apply(geocoding)
+        df[['Longitude','Latitude']] = pd.DataFrame(df['Locations'].tolist(),
+            index=df.index)
+        print(df)
 
-    with open("uploaded_"+file.filename, "r") as read_file,\
-    open("output.csv", "w",newline='') as write_file:
-        csv_reader = reader(read_file)
-        csv_writer = writer(write_file)
 
-        for row in csv_reader:
-            #lat column
-            if csv_reader.line_num == 1: #header
-                row.append("Latitude")
-            else:
-                url = 'https://nominatim.openstreetmap.org/search/' \
-                + urllib.parse.quote(row[1]) +'?format=json'
-                response = requests.get(url).json()
-                if(len(response)!=0):
-                    row.append(response[0]['lat'])
-                else:
-                    row.append("")
-            #long column
-            if csv_reader.line_num == 1: #header
-                row.append("Longitude")
-            else:
-                url = 'https://nominatim.openstreetmap.org/search/' \
-                + urllib.parse.quote(row[1]) +'?format=json'
-                response = requests.get(url).json()
-                if(len(response)!=0):
-                    row.append(response[0]['lon'])
-                else:
-                    row.append("")
-            csv_writer.writerow(row)
-    #shows index pg along with download button
         return render_template("index.html", btn="gdownload.html")
 
 @app.route('/gdownload')
