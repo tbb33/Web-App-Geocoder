@@ -36,7 +36,7 @@ def success():
         print(df)
 
 
-        return render_template("index.html", btn="gdownload.html")
+        return render_template("index.html", btn="gdownload.html", data=df.to_html())
 
 @app.route('/gdownload')
 def gdownload():

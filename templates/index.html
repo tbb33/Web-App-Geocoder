@@ -73,6 +73,11 @@
                 {% if btn %}
                   {% include btn ignore missing %}
                 {% endif %}
+              <div class="container mt-5 mb-5">
+                {% block content %}
+                  {{data | safe}}
+                {% endblock %}
+              </div>
               </div>
             </div>
           </div>
