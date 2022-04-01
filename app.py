@@ -19,29 +19,25 @@ def success():
         df = pd.read_csv("uploaded_"+file.filename)
         #capitalize first letter, rest lowercase
         df.columns = [x.capitalize() for x in df.columns]
-        print(df.columns)
-        #addr_index = df.columns.get_loc("Address")
-        #print(addr_index) #get col index
-        #print(type(df))
         def geocoding(input_address):
             try:
                 g = geocoder.osm(input_address)
                 return g.osm['x'], g.osm['y']
             except:
                 return ""
-        #for row in df.iterrows():
         df['Locations'] = df['Address'].apply(geocoding)
         df[['Longitude','Latitude']] = pd.DataFrame(df['Locations'].tolist(),
-            index=df.index)
-        print(df)
+        index=df.index)
+
+        df.to_csv("output.csv", index=False)
+        return render_template("index.html", btn="geodownload.html",
+        data=df.to_html(index=False))
 
 
-        return render_template("index.html", btn="gdownload.html", data=df.to_html())
-
-@app.route('/gdownload')
-def gdownload():
+@app.route('/geodownload')
+def geodownload():
     return send_file("output.csv",
-    attachment_filename="geocoded_output.csv", as_attachment="True")
+    attachment_filename="geocode_output.csv", as_attachment="True")
 
 if __name__=='__main__':
     app.debug=True
