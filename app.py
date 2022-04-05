@@ -25,11 +25,13 @@ def success():
                 return g.osm['x'], g.osm['y']
             except:
                 return ""
-        df['Locations'] = df['Address'].apply(geocoding)
+        df['Locations'] = df['Address'].apply(geocoding) #geocode addresses
         df[['Longitude','Latitude']] = pd.DataFrame(df['Locations'].tolist(),
-        index=df.index)
-
+        index=df.index) #creating lat/long cols
+        df.drop(columns=['Locations'], inplace=True) #drop temp Locations col
+        df.fillna('', inplace=True) #change NaNs to blank str
         df.to_csv("output.csv", index=False)
+        #render same index pg along with download button and table
         return render_template("index.html", btn="geodownload.html",
         data=df.to_html(index=False))
 

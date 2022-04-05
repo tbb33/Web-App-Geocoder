@@ -34,8 +34,9 @@
                     <div class="card-block">
                         <h4 class="card-title">Step 1</h4>
                         <p class="card-text">
-                            Please ensure your CSV file contains addresses in the second
-                            column, then upload your CSV file.
+                            Please ensure your CSV file contains addresses in a
+                            column named "address" (not case-sensitive),
+                            then upload your CSV file.
                         </p>
                     </div>
                 </div>
@@ -56,7 +57,7 @@
                         <p class="card-text">
                             Your new CSV file containing 2 new
                             latitude and longitude columns is ready to download
-                            instantly. It's that easy!
+                            instantly!
                         </p>
                     </div>
                 </div>
@@ -73,7 +74,7 @@
                 {% if btn %}
                   {% include btn ignore missing %}
                 {% endif %}
-              <div class="container mt-5 mb-5">
+              <div class="container mt-5 mb-5 d-flex justify-content-center">
                 {% block content %}
                   {{data | safe}}
                 {% endblock %}
